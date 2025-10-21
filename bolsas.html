@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolsas - Closet de Marca</title>
+<link rel="icon" href="img/logo.jpg">
+<style>
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #FAFAFA;
+    color: #111;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  /* HEADER */
+  header {
+    background-color: #000;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    position: relative;
+    z-index: 5;
+  }
+
+  header h1 {
+    font-size: 1.6em;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+
+  header h1 img {
+    max-height: 50px;
+    width: auto;
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+  }
+
+  .hamburger div {
+    width: 25px;
+    height: 3px;
+    background: white;
+  }
+
+  /* MENÚ LATERAL */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #000;
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 10;
+    padding-top: 60px;
+  }
+
+  .sidebar a {
+    display: block;
+    padding: 15px 20px;
+    text-decoration: none;
+    color: white;
+    border-bottom: 1px solid #333;
+    font-weight: 600;
+    transition: 0.3s;
+  }
+
+  .sidebar a:hover { 
+    background: #FFD700;
+    color: #000;
+  }
+
+  .sidebar.open { left: 0; }
+
+  /* FILTROS DENTRO DEL SIDEBAR (DESPLEGABLE) */
+  .filters-sidebar {
+    overflow: hidden;
+    max-height: 0;
+    padding: 0 15px;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    margin-bottom: 10px;
+    transition: max-height 0.4s ease, padding 0.4s ease;
+  }
+
+  .filters-sidebar.show {
+    max-height: 500px;
+    padding: 15px;
+  }
+
+  .filters-sidebar label {
+    color: #FFD700;
+    font-weight: 600;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .filters-sidebar select {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 0.95em;
+  }
+
+  /* TITULO PRINCIPAL */
+  .titulo-seccion {
+    background-color: #e0e0e0;
+    text-align: center;
+    margin: 40px auto 20px auto;
+    padding: 15px 30px;
+    border-radius: 10px;
+    width: fit-content;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .titulo-seccion h2 {
+    color: #000;
+    text-transform: uppercase;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  /* GRID DE PRODUCTOS */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px 10px;
+  }
+
+  .card {
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    text-align: center;
+    transition: none;
+  }
+
+  .card img {
+    width: 80%;
+    border-radius: 0;
+    display: block;
+    margin: 0 auto 10px;
+  }
+
+  .card h3 {
+    color: #D90429;
+    text-transform: uppercase;
+    margin: 5px 0 2px 0;
+  }
+
+  .card p {
+    margin: 0;
+    font-size: 0.95em;
+  }
+
+  /* MENSAJE DE NO HAY PRODUCTOS */
+  #mensaje {
+    text-align: center;
+    font-size: 1.2em;
+    color: #D90429;
+    margin-top: 20px;
+    display: none;
+  }
+
+  footer {
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: 40px;
+  }
+
+  footer a { color: #FFD700; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (min-width: 769px){
+    .hamburger { display: flex; }
+    .sidebar { left: -250px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <h1><img src="img/logo.jpg" alt="Logo"> CLOSET DE MARCA</h1>
+  <div class="hamburger" onclick="toggleSidebar()">
+    <div></div><div></div><div></div>
+  </div>
+</header>
+
+<!-- MENÚ LATERAL -->
+<div class="sidebar" id="sidebar">
+  <a href="closetdemarca.html">Página Principal</a>
+  <a href="hombre.html">Hombres</a>
+  <a href="mujer.html">Mujeres</a>
+  <a href="ninos.html">Niños</a>
+  <a href="bolsas.html">Bolsas</a>
+  <a href="dandy.html">Dandy Hats</a>
+  
+  <!-- BOTÓN PARA DESPLEGAR FILTRO -->
+  <a href="javascript:void(0);" onclick="toggleFilters()">Filtro</a>
+
+  <!-- FILTROS EN SIDEBAR -->
+  <div class="filters-sidebar" id="filtersSidebar">
+    <label for="tipoBolsa">Tipo de Bolsa:</label>
+    <select id="tipoBolsa" onchange="filtrarProductos()">
+      <option value="todos">Todos</option>
+      <option value="mochila">Mochila</option>
+      <option value="tote">Tote</option>
+      <option value="crossbody">Crossbody</option>
+      <option value="maletin">Maletín</option>
+    </select>
+
+    <label for="marca">Marca:</label>
+    <select id="marca" onchange="filtrarProductos()">
+      <option value="todos">Todos</option>
+      <option value="tommy">Tommy</option>
+      <option value="coach">Coach</option>
+      <option value="guess">Guess</option>
+      <option value="ch">Carolina Herrera</option>
+      <option value="ck">Calvin Klein</option>
+      <option value="dg">Dolce Gabbana</option>
+      <option value="burberry">Burberry</option>
+      <option value="dior">Dior</option>
+    </select>
+  </div>
+
+  <a href="#contacto">Contacto</a>
+</div>
+
+<!-- TITULO -->
+<div class="titulo-seccion">
+  <h2>Bolsas</h2>
+</div>
+
+<div id="mensaje">No hay productos que coincidan con los filtros seleccionados.</div>
+
+<div class="grid" id="grid">
+  <!-- Aquí puedes agregar las tarjetas de productos -->
+  <!-- Ejemplo:
+  <div class="card" data-tipo="tote" data-marca="coach">
+    <img src="img/bolsacoach.jpg" alt="Bolsa Coach Tote">
+    <h3>Coach Tote</h3>
+    <p>Bolsa elegante de Coach en color beige.</p>
+  </div>
+  -->
+</div>
+
+<footer id="contacto">
+  <h2>CONTACTO</h2>
+  <p>📞 WhatsApp: <a href="https://wa.me/52XXXXXXXXXX" target="_blank">CHATEA CON NOSOTROS</a></p>
+  <p>📸 Instagram: <a href="https://instagram.com/" target="_blank">@CLOSETDEMARCA</a></p>
+  <p>📘 Facebook: <a href="https://facebook.com/" target="_blank">CLOSET DE MARCA</a></p>
+  <p>&copy; 2025 CLOSET DE MARCA. TODOS LOS DERECHOS RESERVADOS.</p>
+</footer>
+
+<script>
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+
+  function toggleFilters() {
+    const filters = document.getElementById('filtersSidebar');
+    filters.classList.toggle('show');
+  }
+
+  function filtrarProductos(){
+    const tipoBolsa = document.getElementById('tipoBolsa').value;
+    const marca = document.getElementById('marca').value;
+
+    const cards = document.querySelectorAll('.card');
+    let algunoVisible = false;
+
+    cards.forEach(card => {
+      const cardTipo = card.getAttribute('data-tipo');
+      const cardMarca = card.getAttribute('data-marca');
+
+      if ((tipoBolsa==='todos'||tipoBolsa===cardTipo) &&
+          (marca==='todos'||marca===cardMarca)) {
+        card.style.display='block';
+        algunoVisible = true;
+      } else {
+        card.style.display='none';
+      }
+    });
+
+    document.getElementById('mensaje').style.display = algunoVisible ? 'none' : 'block';
+  }
+</script>
+
+</body>
+</html>
